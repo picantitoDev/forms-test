@@ -17,6 +17,18 @@ const validateUser = [
     .withMessage(`Last name ${alphaErr}`)
     .isLength({ min: 1, max: 10 })
     .withMessage(`Last name ${lengthErr}`),
+  //Start here
+  body("email").isEmail().withMessage("Enter a valid email"),
+  body("age")
+    .optional()
+    .trim()
+    .isInt({ min: 18, max: 120 })
+    .withMessage("Age must be a number between 18 and 99."),
+  body("bio")
+    .optional()
+    .trim()
+    .isLength({ min: 10, max: 200 })
+    .withMessage("Bio must be less than 200 characters."),
 ]
 
 const usersListGet = (req, res) => {
@@ -46,8 +58,8 @@ const usersCreatePost = [
       })
     }
 
-    const { firstName, lastName } = req.body
-    usersStorage.addUser({ firstName, lastName })
+    const { firstName, lastName, email, age, bio } = req.body
+    usersStorage.addUser({ firstName, lastName, email, age, bio })
 
     res.redirect("/")
   },
@@ -73,11 +85,22 @@ const usersUpdatePost = [
         errors: errors.array(),
       })
     }
-    const { firstName, lastName } = req.body
-    usersStorage.updateUser(req.params.id, { firstName, lastName })
+    const { firstName, lastName, email, age, bio } = req.body
+    usersStorage.updateUser(req.params.id, {
+      firstName,
+      lastName,
+      email,
+      age,
+      bio,
+    })
     res.redirect("/")
   },
 ]
+
+const usersDeletePost = (req, res) => {
+  usersStorage.deleteUser(req.params.id)
+  res.redirect("/")
+}
 
 module.exports = {
   usersListGet,
@@ -85,4 +108,5 @@ module.exports = {
   usersCreatePost,
   usersUpdateGet,
   usersUpdatePost,
+  usersDeletePost,
 }
