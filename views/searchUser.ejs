@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+  </head>
+  <body>
+    <h1><%= title %></h1>
+    <form action="/search/result" method="GET">
+      <label for="name">Username</label>
+      <input
+        type="text"
+        name="name"
+        id="name"
+        placeholder="Search for a user"
+        required
+      />
+      <label for="email">Email</label>
+      <input
+        type="email"
+        name="email"
+        id="email"
+        placeholder="Search for a user email"
+        required
+      />
+      <button type="submit">Search</button>
+    </form>
+  </body>
+</html>
